@@ -22,6 +22,16 @@ function getWeights() {
   };
 }
 
+function updateSliderFill(el) {
+  const min = parseFloat(el.min) || 0;
+  const max = parseFloat(el.max) || 8;
+  const val = parseFloat(el.value) || 0;
+  const pct = ((val - min) / (max - min)) * 100;
+  if (el.style && typeof el.style.setProperty === "function") {
+    el.style.setProperty("--pct", pct.toFixed(1) + "%");
+  }
+}
+
 function setSlidersFromWeights(w) {
   if (!w) return;
   const pairs = [
@@ -33,8 +43,10 @@ function setSlidersFromWeights(w) {
   ];
   pairs.forEach(([id, val]) => {
     if (typeof val === "number" && !Number.isNaN(val)) {
-      $(id).value = val;
+      const el = $(id);
+      el.value = val;
       $("val-" + id).textContent = val.toFixed(1);
+      updateSliderFill(el);
     }
   });
 }
@@ -43,8 +55,10 @@ function bindWeightSliders() {
   ["w1", "w2", "w3", "w4", "w5"].forEach((id) => {
     const el = $(id);
     const lbl = $("val-" + id);
+    updateSliderFill(el);
     el.addEventListener("input", () => {
       lbl.textContent = parseFloat(el.value).toFixed(1);
+      updateSliderFill(el);
     });
   });
 }
@@ -70,7 +84,7 @@ async function fetchScenarios() {
   state.scenarios.forEach((sc) => {
     const opt = document.createElement("option");
     opt.value = sc.name;
-    opt.textContent = `${sc.name} (|E|=${sc.stats.students}, |A|=${sc.stats.courses}, |S|=${sc.stats.sections})`;
+    opt.textContent = `${sc.name} — ${sc.stats.students} est. · ${sc.stats.courses} materias · ${sc.stats.sections} secciones`;
     sel.appendChild(opt);
   });
   if (state.scenarios.length > 0) {
@@ -91,7 +105,7 @@ async function loadScenario(name) {
 
   const st = state.instance.stats;
   $("instance-metrics").textContent =
-    `|E|=${st.students}  |A|=${st.courses}  |S|=${st.sections}  |T|=${st.time_slots}  |U|=${st.buildings}  |G_soc|=${st.social_links}  seed=${state.instance.seed}`;
+    `${st.students} estudiantes · ${st.courses} materias · ${st.sections} secciones · ${st.time_slots} franjas · ${st.buildings} edificios · ${st.social_links} vínculos`;
 
   const stSel = $("student-select");
   stSel.innerHTML = "";
@@ -100,7 +114,7 @@ async function loadScenario(name) {
     const s = state.instance.students[eid];
     const opt = document.createElement("option");
     opt.value = eid;
-    opt.textContent = `${eid} — ${s.name} (${s.requested_courses.length} mat.)`;
+    opt.textContent = `${s.name} (${eid} · ${s.requested_courses.length} materias)`;
     stSel.appendChild(opt);
   });
   state.activeStudent = eids[0] || null;
@@ -159,7 +173,7 @@ async function generateCustomScenario() {
     const sel = $("scenario-select");
     const opt = document.createElement("option");
     opt.value = inst.name;
-    opt.textContent = `${inst.name} (|E|=${inst.stats.students}, |A|=${inst.stats.courses}, |S|=${inst.stats.sections})`;
+    opt.textContent = `${inst.name} — ${inst.stats.students} est. · ${inst.stats.courses} materias · ${inst.stats.sections} secciones`;
     sel.appendChild(opt);
     sel.value = inst.name;
     $("custom-gen-box").classList.add("hidden");
@@ -181,7 +195,7 @@ function renderAll() {
 function formatInstrumentation(key, meta) {
   if (!meta) return "—";
   if (key === "greedy") {
-    return `eval=${meta.evaluations ?? "—"} · ${meta.complexity || "polinomial"}`;
+    return `eval=${meta.evaluations ?? "—"}`;
   }
   if (key === "hybrid") {
     const mv = meta.moves || {};
@@ -228,9 +242,9 @@ function renderComparisonTable() {
     }
 
     tr.innerHTML = `
-      <td style="text-align:center;"><input type="radio" name="algo-radio" ${key === state.activeAlgo ? "checked" : ""} aria-label="Seleccionar ${res.algorithm}" /></td>
+      <td style="text-align:center;"><input type="radio" class="algo-radio" name="algo-radio" ${key === state.activeAlgo ? "checked" : ""} aria-label="Seleccionar ${res.algorithm}" /></td>
       <td><strong>${res.algorithm}</strong></td>
-      <td><span class="${ev.valid ? "status-ok" : "status-err"}">${ev.valid ? "VÁLIDO (0)" : `ERR (${ev.violations.length})`}</span></td>
+      <td><span class="${ev.valid ? "status-ok" : "status-err"}">${ev.valid ? "Válido (0 viol.)" : `Error (${ev.violations.length})`}</span></td>
       <td class="num"><strong>${ev.z_score.toFixed(2)}</strong></td>
       <td class="num">${vsGreedy}</td>
       <td class="num">${gapStr}</td>
@@ -243,20 +257,19 @@ function renderComparisonTable() {
     tbody.appendChild(tr);
   });
 
-  // Línea de convergencia o detalle técnico del algoritmo activo
   const active = state.results[state.activeAlgo];
   const convBox = $("convergence-line");
   if (active && state.activeAlgo === "hybrid" && active.metadata.convergence_history) {
     const hist = active.metadata.convergence_history;
     const shown = hist.length > 10 ? [...hist.slice(0, 6), "...", hist[hist.length - 1]] : hist;
-    convBox.textContent =
-      `Convergencia Búsqueda Local (semilla=${active.metadata.best_seed}, ΔZ=${active.metadata.improvement_z >= 0 ? "+" : ""}${active.metadata.improvement_z}):  Z = [ ${shown.join(" → ")} ]`;
+    convBox.innerHTML =
+      `<strong>Convergencia de la Búsqueda Local</strong> (semilla inicial: ${active.metadata.best_seed}, mejora <span class="mono">${active.metadata.improvement_z >= 0 ? "+" : ""}${active.metadata.improvement_z}</span>): <span class="mono">Z = [ ${shown.join(" → ")} ]</span>`;
   } else if (active && state.activeAlgo === "exact") {
-    convBox.textContent =
-      `Branch & Bound: ${active.metadata.optimal ? "Óptimo global certificado Z*" : "Límite de tiempo alcanzado (mejor incumbent)"} · nodos explorados=${active.metadata.nodes_explored} · ramas podadas por cota superior=${active.metadata.pruned_by_bound}`;
+    convBox.innerHTML =
+      `<strong>Branch &amp; Bound:</strong> ${active.metadata.optimal ? "Óptimo global certificado Z*" : "Límite de tiempo alcanzado (mejor solución hallada)"} · <span class="mono">nodos=${active.metadata.nodes_explored} · podas=${active.metadata.pruned_by_bound}</span>`;
   } else if (active) {
-    convBox.textContent =
-      `Voraz Constructivo: ordenamiento por prioridad P_e(a) + escasez · candidatas evaluadas=${active.metadata.evaluations} · complejidad ${active.metadata.complexity}`;
+    convBox.innerHTML =
+      `<strong>Voraz Constructivo:</strong> asigna por orden de prioridad y escasez · <span class="mono">eval=${active.metadata.evaluations} · ${active.metadata.complexity}</span>`;
   } else {
     convBox.textContent = "";
   }
@@ -271,35 +284,35 @@ function renderBreakdownTable() {
   const rows = [
     {
       name: "Prioridad académica",
-      unit: "suma P_e(a) ∈ [1, 10]",
+      unit: "Puntaje [1–10]",
       weight: `+${w.w1_priority.toFixed(1)}`,
       raw: ev.raw.priority,
       weighted: ev.weighted.priority,
     },
     {
-      name: "Empatía profesor",
-      unit: "suma M_e(s) ∈ [0, 1]",
+      name: "Empatía con profesor",
+      unit: "Afinidad [0–1]",
       weight: `+${w.w2_empathy.toFixed(1)}`,
       raw: ev.raw.empathy,
       weighted: ev.weighted.empathy,
     },
     {
       name: "Planificación personal",
-      unit: "suma L_e(t) ∈ [−1, +1]",
+      unit: "Bloques [−1 a +1]",
       weight: `+${w.w3_planning.toFixed(1)}`,
       raw: ev.raw.planning,
       weighted: ev.weighted.planning,
     },
     {
-      name: "Social y académico (G_soc)",
-      unit: "suma w_ij ∈ [0, 1]",
+      name: "Vínculos sociales",
+      unit: "Vínculos [0–1]",
       weight: `+${w.w4_social.toFixed(1)}`,
       raw: ev.raw.social,
       weighted: ev.weighted.social,
     },
     {
-      name: "Logística (desplazamiento)",
-      unit: "minutos D(u₁, u₂) ≥ 0",
+      name: "Desplazamiento logístico",
+      unit: "Minutos de caminata",
       weight: `−${w.w5_logistics.toFixed(1)}`,
       raw: ev.raw.logistics,
       weighted: -ev.weighted.logistics,
@@ -320,7 +333,7 @@ function renderBreakdownTable() {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td><strong>${r.name}</strong></td>
-      <td class="mono" style="font-size:12px;color:#374151;">${r.unit}</td>
+      <td style="color:#374151;">${r.unit}</td>
       <td class="num">${r.weight}</td>
       <td class="num">${r.raw.toFixed(2)}</td>
       <td class="num" style="font-weight:700;color:${isNeg ? "#b91c1c" : "#111827"};">${r.weighted >= 0 ? "+" : ""}${r.weighted.toFixed(2)}</td>
@@ -336,9 +349,8 @@ function renderBreakdownTable() {
     tbody.appendChild(tr);
   });
 
-  // Fila total Z(X)
   const trTot = document.createElement("tr");
-  trTot.style.background = "#f9fafb";
+  trTot.style.background = "#f8f9fa";
   trTot.innerHTML = `
     <td colspan="4"><strong>Total Función Objetivo Z(X)</strong></td>
     <td class="num" style="font-weight:800;color:#003366;">${ev.z_score.toFixed(2)}</td>
@@ -360,13 +372,13 @@ function renderStudentSchedule() {
 
   const unassignedNames = det.unassigned_courses.map((c) => inst.courses[c]?.name || c);
   $("student-metrics-bar").innerHTML = `
-    <span><strong>${eid}</strong> (${st.name})</span>
-    <span>Materias: <strong>${det.assigned_courses.length}/${st.requested_courses.length}</strong></span>
-    <span>Prioridad: <strong>${det.priority}</strong></span>
-    <span>Empatía: <strong>${det.empathy}</strong></span>
-    <span>Planificación: <strong>${det.planning}</strong></span>
-    <span>Social: <strong>${det.social}</strong> (${det.social_friends.length} coinc.)</span>
-    <span>Logística: <strong>${det.logistics} min</strong></span>
+    <span><strong>${st.name}</strong> (${eid})</span>
+    <span>Materias asignadas: <strong class="mono">${det.assigned_courses.length}/${st.requested_courses.length}</strong></span>
+    <span>Prioridad: <strong class="mono">${det.priority}</strong></span>
+    <span>Empatía: <strong class="mono">${det.empathy}</strong></span>
+    <span>Planificación: <strong class="mono">${det.planning}</strong></span>
+    <span>Coincidencias sociales: <strong class="mono">${det.social_friends.length}</strong></span>
+    <span>Caminata total: <strong class="mono">${det.logistics} min</strong></span>
     ${unassignedNames.length ? `<span class="unassigned-alert">Sin asignar: ${unassignedNames.join(", ")}</span>` : ""}
   `;
 
@@ -402,7 +414,7 @@ function renderStudentSchedule() {
     friendsBySec[fr.section_id].push(fr.friend_name.split(" ")[0]);
   });
 
-  let html = `<thead><tr><th>Franja</th>${dayIndices.map((d) => `<th>${daysMap.get(d)}</th>`).join("")}</tr></thead><tbody>`;
+  let html = `<thead><tr><th class="time-head">Franja</th>${dayIndices.map((d) => `<th>${daysMap.get(d)}</th>`).join("")}</tr></thead><tbody>`;
   blockIndices.forEach((b) => {
     html += `<tr><td class="time-col">${blocksMap.get(b)}</td>`;
     dayIndices.forEach((d) => {
@@ -416,7 +428,7 @@ function renderStudentSchedule() {
       const sec = slotToSec[ts.id];
 
       if (!sec) {
-        html += `<td class="${prefCls}"><span class="empty-slot">${ts.id} · L=${pref >= 0 ? "+" : ""}${pref}</span></td>`;
+        html += `<td class="${prefCls}"></td>`;
         return;
       }
 
@@ -432,10 +444,10 @@ function renderStudentSchedule() {
       html += `<td class="${prefCls}">
         <div class="slot-class">
           <div class="slot-course">${course.name}</div>
-          <div class="slot-meta">${sec.id} · ${sec.professor} · ${bldg.short_name} (${bId})</div>
-          <div class="slot-nums">P=${prio} · M=${emp.toFixed(2)} · L=${pref >= 0 ? "+" : ""}${pref}</div>
-          ${friends.length ? `<div class="slot-social">Social G_soc: ${friends.join(", ")}</div>` : ""}
-          ${tr ? `<div class="slot-walk">Transición: ${fromBldg.short_name} → ${bldg.short_name} (${tr.distance} min)</div>` : ""}
+          <div class="slot-meta">${sec.id} · ${sec.professor} · ${bldg.short_name}</div>
+          <div class="slot-nums">Prioridad <span class="mono">${prio}</span> · Empatía <span class="mono">${emp.toFixed(2)}</span></div>
+          ${friends.length ? `<div class="slot-social">Con: ${friends.join(", ")}</div>` : ""}
+          ${tr ? `<div class="slot-walk">Caminata: ${fromBldg.short_name} → ${bldg.short_name} (<span class="mono">${tr.distance} min</span>)</div>` : ""}
         </div>
       </td>`;
     });
@@ -464,7 +476,7 @@ function renderOccupancyTable() {
     if (!exceeded) okCount += 1;
 
     const statusCls = exceeded ? "status-err" : occ === cap ? "status-warn" : "status-ok";
-    const statusTxt = exceeded ? "EXCEDIDO" : occ === cap ? "LLENO" : "OK";
+    const statusTxt = exceeded ? "Excedido" : occ === cap ? "Lleno" : "OK";
     const barColor = exceeded ? "#b91c1c" : occ === cap ? "#b8860b" : "#003366";
 
     const tr = document.createElement("tr");
@@ -481,8 +493,8 @@ function renderOccupancyTable() {
   });
 
   const summary = $("occupancy-summary");
-  summary.className = "mono status-summary " + (okCount === sids.length ? "status-ok" : "status-err");
-  summary.textContent = `∀s∈S: ∑X[e,s] ≤ cupo(s) [${okCount}/${sids.length} OK]`;
+  summary.className = "status-summary " + (okCount === sids.length ? "status-ok" : "status-err");
+  summary.textContent = `Restricción de cupos: ${okCount}/${sids.length} cumplidas`;
 }
 
 function renderCampusGraph() {
@@ -497,52 +509,64 @@ function renderCampusGraph() {
   const transitions = det ? det.transitions : [];
   const activeEdges = new Set(transitions.map((t) => [t.from_building, t.to_building].sort().join("-")));
 
-  const W = 540;
-  const H = 320;
-  const sx = (x) => 48 + (x / 100) * (W - 96);
-  const sy = (y) => 34 + (y / 100) * (H - 74);
+  const W = 560;
+  const H = 330;
+  const sx = (x) => 52 + (x / 100) * (W - 104);
+  const sy = (y) => 36 + (y / 100) * (H - 78);
 
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Grafo ponderado de edificios del campus PUJ">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa de edificios y tiempos de caminata en el campus PUJ">`;
 
-  // Aristas base (sutiles) y aristas activas (dorado fuerte)
+  // 1. Dibujar primero todas las aristas inactivas del campus con sus tiempos de caminata
   for (let i = 0; i < buildings.length; i++) {
     for (let j = i + 1; j < buildings.length; j++) {
       const b1 = buildings[i];
       const b2 = buildings[j];
       const key = [b1.id, b2.id].sort().join("-");
-      const isActive = activeEdges.has(key);
+      if (activeEdges.has(key)) continue;
       const dist = inst.locations.distances[b1.id]?.[b2.id] ?? 0;
       const x1 = sx(b1.x), y1 = sy(b1.y), x2 = sx(b2.x), y2 = sy(b2.y);
+      const mx = (x1 + x2) / 2;
+      const my = (y1 + y2) / 2;
 
-      svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"
-        stroke="${isActive ? "#b8860b" : "#d1d5db"}"
-        stroke-width="${isActive ? 2.8 : 1}"
-        stroke-dasharray="${isActive ? "" : "3,3"}" />`;
-
-      if (isActive) {
-        const mx = (x1 + x2) / 2;
-        const my = (y1 + y2) / 2;
-        svg += `<rect x="${mx - 24}" y="${my - 9}" width="48" height="17" fill="#fffbeb" stroke="#b8860b" stroke-width="1" />`;
-        svg += `<text x="${mx}" y="${my + 3}" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="700" fill="#78350f">${dist}m</text>`;
-      }
+      svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#d1d5db" stroke-width="1.1" />`;
+      svg += `<rect x="${mx - 17}" y="${my - 7}" width="34" height="13" rx="2" fill="#ffffff" fill-opacity="0.88" />`;
+      svg += `<text x="${mx}" y="${my + 3}" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="9" fill="#6b7280">${dist}m</text>`;
     }
   }
 
-  // Nodos
+  // 2. Dibujar encima las rutas activas del estudiante resaltadas en dorado
+  for (let i = 0; i < buildings.length; i++) {
+    for (let j = i + 1; j < buildings.length; j++) {
+      const b1 = buildings[i];
+      const b2 = buildings[j];
+      const key = [b1.id, b2.id].sort().join("-");
+      if (!activeEdges.has(key)) continue;
+      const dist = inst.locations.distances[b1.id]?.[b2.id] ?? 0;
+      const x1 = sx(b1.x), y1 = sy(b1.y), x2 = sx(b2.x), y2 = sy(b2.y);
+      const mx = (x1 + x2) / 2;
+      const my = (y1 + y2) / 2;
+
+      svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#b8860b" stroke-width="3" />`;
+      svg += `<rect x="${mx - 23}" y="${my - 9}" width="46" height="17" rx="2" fill="#fffbeb" stroke="#b8860b" stroke-width="1.1" />`;
+      svg += `<text x="${mx}" y="${my + 3}" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="700" fill="#78350f">${dist} min</text>`;
+    }
+  }
+
+  // 3. Nodos de edificios
   buildings.forEach((b) => {
     const cx = sx(b.x);
     const cy = sy(b.y);
     svg += `<circle cx="${cx}" cy="${cy}" r="16" fill="#003366" stroke="#ffffff" stroke-width="2" />`;
-    svg += `<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="10.5" font-weight="700" fill="#ffffff">${b.id}</text>`;
-    svg += `<text x="${cx}" y="${cy + 28}" text-anchor="middle" font-size="11" font-weight="600" fill="#111827">${b.short_name}</text>`;
+    svg += `<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-family="ui-monospace, Consolas, monospace" font-size="10" font-weight="700" fill="#ffffff">${b.id}</text>`;
+    svg += `<text x="${cx}" y="${cy + 29}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#111827">${b.short_name}</text>`;
   });
 
   svg += `</svg>`;
   wrap.innerHTML = svg;
 
   $("graph-note").textContent = transitions.length > 0
-    ? `${transitions.length} transición(es) consecutiva(s) en dorado (total ${det.logistics} min).`
-    : `Sin desplazamientos entre edificios distintos en clases consecutivas (0.0 min).`;
+    ? `${transitions.length} recorrido(s) consecutivo(s) resaltado(s) en dorado (total ${det.logistics} min).`
+    : `Este estudiante no tiene clases consecutivas en edificios distintos (0.0 min).`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
