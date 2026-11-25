@@ -1,0 +1,170 @@
+[
+  {
+    "id": "S001",
+    "course_id": "A01",
+    "capacity": 4,
+    "schedule": [
+      "T14",
+      "T24"
+    ],
+    "rooms": {
+      "T14": "U5",
+      "T24": "U5"
+    },
+    "professor": "Prof. K. Díaz"
+  },
+  {
+    "id": "S002",
+    "course_id": "A01",
+    "capacity": 5,
+    "schedule": [
+      "T06",
+      "T18"
+    ],
+    "rooms": {
+      "T06": "U2",
+      "T18": "U2"
+    },
+    "professor": "Prof. H. Torres"
+  },
+  {
+    "id": "S003",
+    "course_id": "A02",
+    "capacity": 4,
+    "schedule": [
+      "T12",
+      "T22"
+    ],
+    "rooms": {
+      "T12": "U4",
+      "T22": "U4"
+    },
+    "professor": "Prof. P. Ortiz"
+  },
+  {
+    "id": "S004",
+    "course_id": "A02",
+    "capacity": 4,
+    "schedule": [
+      "T08",
+      "T23"
+    ],
+    "rooms": {
+      "T08": "U3",
+      "T23": "U3"
+    },
+    "professor": "Prof. C. Parra"
+  },
+  {
+    "id": "S005",
+    "course_id": "A03",
+    "capacity": 5,
+    "schedule": [
+      "T02",
+      "T20"
+    ],
+    "rooms": {
+      "T02": "U1",
+      "T20": "U1"
+    },
+    "professor": "Prof. H. Torres"
+  },
+  {
+    "id": "S006",
+    "course_id": "A03",
+    "capacity": 5,
+    "schedule": [
+      "T09",
+      "T22"
+    ],
+    "rooms": {
+      "T09": "U3",
+      "T22": "U3"
+    },
+    "professor": "Prof. H. Torres"
+  },
+  {
+    "id": "S007",
+    "course_id": "A03",
+    "capacity": 5,
+    "schedule": [
+      "T17",
+      "T22"
+    ],
+    "rooms": {
+      "T17": "U5",
+      "T22": "U5"
+    },
+    "professor": "Prof. L. Flórez"
+  },
+  {
+    "id": "S008",
+    "course_id": "A04",
+    "capacity": 5,
+    "schedule": [
+      "T08",
+      "T23"
+    ],
+    "rooms": {
+      "T08": "U1",
+      "T23": "U4"
+    },
+    "professor": "Prof. F. Morales"
+  },
+  {
+    "id": "S009",
+    "course_id": "A04",
+    "capacity": 4,
+    "schedule": [
+      "T10",
+      "T24"
+    ],
+    "rooms": {
+      "T10": "U2",
+      "T24": "U2"
+    },
+    "professor": "Prof. V. Mendoza"
+  },
+  {
+    "id": "S010",
+    "course_id": "A05",
+    "capacity": 5,
+    "schedule": [
+      "T10",
+      "T25"
+    ],
+    "rooms": {
+      "T10": "U3",
+      "T25": "U3"
+    },
+    "professor": "Prof. V. Mendoza"
+  },
+  {
+    "id": "S011",
+    "course_id": "A05",
+    "capacity": 3,
+    "schedule": [
+      "T08",
+      "T18"
+    ],
+    "rooms": {
+      "T08": "U4",
+      "T18": "U3"
+    },
+    "professor": "Prof. A. Carrillo"
+  },
+  {
+    "id": "S012",
+    "course_id": "A05",
+    "capacity": 3,
+    "schedule": [
+      "T06",
+      "T16"
+    ],
+    "rooms": {
+      "T06": "U4",
+      "T16": "U4"
+    },
+    "professor": "Prof. V. Mendoza"
+  }
+]

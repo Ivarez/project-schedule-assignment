@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUJ · Asignación de Horarios Estudiantiles — Análisis de Algoritmos</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-main">
+      <h1>Asignación de Horarios Estudiantiles — Análisis Experimental</h1>
+      <p class="header-sub">Pontificia Universidad Javeriana · Análisis de Algoritmos 2026-30 · Iván Álvarez Fuenmayor &amp; Nassin Suz Soler</p>
+    </div>
+    <div class="header-metrics mono" id="instance-metrics">Cargando instancia...</div>
+  </header>
+
+  <main class="page">
+    <!-- 1. CONFIGURACIÓN DE INSTANCIA Y PESOS -->
+    <section class="section">
+      <div class="section-head">
+        <h2>1. Instancia de Prueba y Parámetros de Z(X)</h2>
+        <div class="inline-actions">
+          <button id="btn-solve" class="btn btn-primary" type="button">Ejecutar algoritmos</button>
+          <button id="btn-toggle-gen" class="btn" type="button">Generar instancia</button>
+        </div>
+      </div>
+
+      <div class="controls-bar">
+        <div class="field">
+          <label for="scenario-select">Escenario</label>
+          <select id="scenario-select"></select>
+        </div>
+
+        <div class="field field-grow">
+          <label class="check-label">
+            <input type="checkbox" id="include-exact" checked />
+            Ejecutar Exacto (Branch &amp; Bound, límite 2.0 s)
+          </label>
+          <span class="desc-text" id="scenario-desc"></span>
+        </div>
+      </div>
+
+      <div id="custom-gen-box" class="gen-bar hidden">
+        <div class="field">
+          <label for="gen-students">Estudiantes |E|</label>
+          <input type="number" id="gen-students" min="4" max="200" value="24" class="mono" />
+        </div>
+        <div class="field">
+          <label for="gen-courses">Asignaturas |A|</label>
+          <input type="number" id="gen-courses" min="3" max="25" value="10" class="mono" />
+        </div>
+        <div class="field">
+          <label for="gen-seed">Semilla</label>
+          <input type="number" id="gen-seed" value="777" class="mono" />
+        </div>
+        <label class="check-label">
+          <input type="checkbox" id="gen-stress" />
+          Cupos ajustados / alta congestión
+        </label>
+        <button id="btn-generate" class="btn btn-primary" type="button">Crear y resolver</button>
+      </div>
+
+      <div class="weights-section">
+        <div class="formula-line mono">
+          Z(X) = w₁·Prioridad(X) + w₂·Empatía(X) + w₃·Planificación(X) + w₄·Social(X) − w₅·Logística(X)
+        </div>
+        <div class="sliders-row">
+          <div class="slider-col">
+            <div class="slider-label">
+              <span>w₁ Prioridad</span>
+              <span class="mono val" id="val-w1">1.0</span>
+            </div>
+            <input type="range" id="w1" min="0" max="8" step="0.5" value="1.0" />
+          </div>
+          <div class="slider-col">
+            <div class="slider-label">
+              <span>w₂ Empatía</span>
+              <span class="mono val" id="val-w2">4.0</span>
+            </div>
+            <input type="range" id="w2" min="0" max="8" step="0.5" value="4.0" />
+          </div>
+          <div class="slider-col">
+            <div class="slider-label">
+              <span>w₃ Planificación</span>
+              <span class="mono val" id="val-w3">2.0</span>
+            </div>
+            <input type="range" id="w3" min="0" max="8" step="0.5" value="2.0" />
+          </div>
+          <div class="slider-col">
+            <div class="slider-label">
+              <span>w₄ Social (G_soc)</span>
+              <span class="mono val" id="val-w4">5.0</span>
+            </div>
+            <input type="range" id="w4" min="0" max="8" step="0.5" value="5.0" />
+          </div>
+          <div class="slider-col">
+            <div class="slider-label">
+              <span>w₅ Logística (−)</span>
+              <span class="mono val" id="val-w5">1.5</span>
+            </div>
+            <input type="range" id="w5" min="0" max="8" step="0.5" value="1.5" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. COMPARATIVA DE ALGORITMOS E INSTRUMENTACIÓN -->
+    <section class="section">
+      <div class="section-head">
+        <h2>2. Comparativa de Algoritmos e Instrumentación</h2>
+        <span class="section-note">Selecciona una fila para auditar su horario, ocupación de cupos y grafo de desplazamientos.</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="comparison-table">
+          <thead>
+            <tr>
+              <th style="width:36px;">Sel</th>
+              <th>Algoritmo</th>
+              <th>Validez</th>
+              <th class="num">Z(X)</th>
+              <th class="num">vs. Voraz</th>
+              <th class="num">Gap vs. Z*</th>
+              <th class="num">Asignadas</th>
+              <th class="num">Social</th>
+              <th class="num">Logística</th>
+              <th>Instrumentación</th>
+              <th class="num">Tiempo</th>
+            </tr>
+          </thead>
+          <tbody id="comparison-tbody"></tbody>
+        </table>
+      </div>
+      <div id="convergence-line" class="convergence-line mono"></div>
+    </section>
+
+    <!-- 3. DESGLOSE DIVERGENTE DE Z(X) -->
+    <section class="section">
+      <div class="section-head">
+        <h2>3. Desglose de la Función Objetivo Z(X) (Eje Cero Real)</h2>
+        <span class="section-note">Muestra unidades crudas, aporte ponderado con signo y peso relativo sobre Σ|aporte|.</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="breakdown-table">
+          <thead>
+            <tr>
+              <th>Criterio</th>
+              <th>Unidad / Rango</th>
+              <th class="num">Peso</th>
+              <th class="num">Valor crudo</th>
+              <th class="num">Aporte ponderado</th>
+              <th class="num">% de Σ|aporte|</th>
+              <th style="width:280px;">Gráfica divergente (eje 0)</th>
+            </tr>
+          </thead>
+          <tbody id="breakdown-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. HORARIO SEMANAL AUDITABLE POR ESTUDIANTE -->
+    <section class="section">
+      <div class="section-head">
+        <h2>4. Auditoría de Horario Semanal por Estudiante</h2>
+        <div class="student-control">
+          <label for="student-select">Estudiante:</label>
+          <select id="student-select"></select>
+        </div>
+      </div>
+
+      <div id="student-metrics-bar" class="metrics-strip mono"></div>
+
+      <div class="legend-row">
+        <span><i class="swatch sw-pos"></i>L_e(t) = +1 (desea clase)</span>
+        <span><i class="swatch sw-neu"></i>L_e(t) = 0 (indiferente)</span>
+        <span><i class="swatch sw-neg"></i>L_e(t) = −1 (tiempo libre)</span>
+        <span><i class="swatch sw-soc"></i>Coincidencia social G_soc</span>
+        <span><i class="swatch sw-log"></i>Desplazamiento consecutivo D(u₁, u₂)</span>
+      </div>
+
+      <div class="table-wrap timetable-container">
+        <table class="timetable" id="timetable"></table>
+      </div>
+    </section>
+
+    <!-- 5. OCUPACIÓN DE CUPOS Y GRAFO DE UBICACIONES G_U -->
+    <section class="section split-section">
+      <div class="split-col">
+        <div class="section-head">
+          <h2>5. Ocupación de Secciones (Cupos)</h2>
+          <span class="mono status-summary" id="occupancy-summary"></span>
+        </div>
+        <div class="table-wrap occupancy-container">
+          <table class="data-table" id="occupancy-table">
+            <thead>
+              <tr>
+                <th>Sección</th>
+                <th>Asignatura</th>
+                <th class="num">Insc. / Cupo</th>
+                <th style="width:120px;">Uso</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="occupancy-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="split-col">
+        <div class="section-head">
+          <h2>6. Grafo de Ubicaciones G_U = (U, D)</h2>
+          <span class="section-note" id="graph-note">Aristas resaltadas en dorado: transiciones consecutivas del estudiante.</span>
+        </div>
+        <div id="campus-graph-wrap" class="campus-graph-wrap"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer mono">
+    PUJ · Ingeniería de Sistemas · Análisis de Algoritmos 2026-30 · Implementación verificable de Entrega 1
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

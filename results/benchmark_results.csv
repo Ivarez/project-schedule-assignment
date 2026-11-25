@@ -1,0 +1,10 @@
+scenario,students,courses,sections,algorithm_key,algorithm,valid,violations,z_score,assigned,requested,assignment_rate,social_matches,social_total,raw_logistics,runtime_ms,optimal
+pequeno,6,5,12,greedy,Voraz Constructivo,True,0,179.99,19,21,0.9048,3,7,0.0,1.425,False
+pequeno,6,5,12,hybrid,Híbrido (Voraz + Búsqueda Local),True,0,185.64,20,21,0.9524,5,7,0.0,8.666,False
+pequeno,6,5,12,exact,Exacto (Backtracking + Branch & Bound),True,0,193.73,20,21,0.9524,3,7,0.0,3001.521,False
+intermedio,30,12,41,greedy,Voraz Constructivo,True,0,1250.86,129,136,0.9485,33,60,29.18,4.793,False
+intermedio,30,12,41,hybrid,Híbrido (Voraz + Búsqueda Local),True,0,1281.035,132,136,0.9706,47,60,45.25,79.666,False
+grande,120,25,82,greedy,Voraz Constructivo,True,0,5173.795,545,611,0.892,87,240,184.27,41.199,False
+grande,120,25,82,hybrid,Híbrido (Voraz + Búsqueda Local),True,0,5357.085,544,611,0.8903,165,240,146.29,486.223,False
+extremo_conflictos,18,8,16,greedy,Voraz Constructivo,True,0,887.455,80,102,0.7843,13,36,28.85,1.946,False
+extremo_conflictos,18,8,16,hybrid,Híbrido (Voraz + Búsqueda Local),True,0,909.775,81,102,0.7941,16,36,28.85,29.052,False

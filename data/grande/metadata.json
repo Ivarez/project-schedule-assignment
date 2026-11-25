@@ -1,0 +1,12 @@
+{
+  "name": "grande",
+  "description": "Escenario grande (120 estudiantes, 25 materias, ~85 secciones) — prueba de escalabilidad y tiempo de ejecución.",
+  "seed": 303,
+  "default_weights": {
+    "w1_priority": 1.0,
+    "w2_empathy": 4.0,
+    "w3_planning": 2.0,
+    "w4_social": 5.0,
+    "w5_logistics": 1.5
+  }
+}

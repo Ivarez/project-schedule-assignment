@@ -1,0 +1,118 @@
+{
+  "buildings": [
+    {
+      "id": "U1",
+      "name": "Ed. José Gabriel Maldonado (Ingeniería)",
+      "short_name": "Maldonado",
+      "x": 72.0,
+      "y": 22.0
+    },
+    {
+      "id": "U2",
+      "name": "Ed. Fernando Barón",
+      "short_name": "Barón",
+      "x": 45.0,
+      "y": 42.0
+    },
+    {
+      "id": "U3",
+      "name": "Ed. Gabriel Giraldo",
+      "short_name": "Giraldo",
+      "x": 30.0,
+      "y": 62.0
+    },
+    {
+      "id": "U4",
+      "name": "Ed. Jesús Emilio Ramírez (Ciencias)",
+      "short_name": "Ciencias",
+      "x": 62.0,
+      "y": 52.0
+    },
+    {
+      "id": "U5",
+      "name": "Ed. Pablo VI",
+      "short_name": "Pablo VI",
+      "x": 22.0,
+      "y": 32.0
+    },
+    {
+      "id": "U6",
+      "name": "Ed. Rafael Arboleda (Biblioteca)",
+      "short_name": "Arboleda",
+      "x": 50.0,
+      "y": 74.0
+    },
+    {
+      "id": "U7",
+      "name": "Ed. Jorge Hoyos Vásquez",
+      "short_name": "Hoyos",
+      "x": 78.0,
+      "y": 68.0
+    }
+  ],
+  "distances": {
+    "U1": {
+      "U1": 0.0,
+      "U2": 5.2,
+      "U3": 7.88,
+      "U4": 4.98,
+      "U5": 7.11,
+      "U6": 7.71,
+      "U7": 6.6
+    },
+    "U2": {
+      "U1": 5.2,
+      "U2": 0.0,
+      "U3": 4.25,
+      "U4": 3.67,
+      "U5": 4.26,
+      "U6": 5.06,
+      "U7": 6.12
+    },
+    "U3": {
+      "U1": 7.88,
+      "U2": 4.25,
+      "U3": 0.0,
+      "U4": 5.19,
+      "U5": 4.92,
+      "U6": 4.07,
+      "U7": 6.82
+    },
+    "U4": {
+      "U1": 4.98,
+      "U2": 3.67,
+      "U3": 5.19,
+      "U4": 0.0,
+      "U5": 6.42,
+      "U6": 4.26,
+      "U7": 3.99
+    },
+    "U5": {
+      "U1": 7.11,
+      "U2": 4.26,
+      "U3": 4.92,
+      "U4": 6.42,
+      "U5": 0.0,
+      "U6": 7.05,
+      "U7": 8.82
+    },
+    "U6": {
+      "U1": 7.71,
+      "U2": 5.06,
+      "U3": 4.07,
+      "U4": 4.26,
+      "U5": 7.05,
+      "U6": 0.0,
+      "U7": 4.65
+    },
+    "U7": {
+      "U1": 6.6,
+      "U2": 6.12,
+      "U3": 6.82,
+      "U4": 3.99,
+      "U5": 8.82,
+      "U6": 4.65,
+      "U7": 0.0
+    }
+  }
+}

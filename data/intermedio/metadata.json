@@ -1,0 +1,12 @@
+{
+  "name": "intermedio",
+  "description": "Escenario intermedio (30 estudiantes, 12 materias, ~36 secciones) — carga representativa de departamento.",
+  "seed": 202,
+  "default_weights": {
+    "w1_priority": 1.0,
+    "w2_empathy": 4.0,
+    "w3_planning": 2.0,
+    "w4_social": 5.0,
+    "w5_logistics": 1.5
+  }
+}

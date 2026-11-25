@@ -1,0 +1,12 @@
+{
+  "name": "extremo_conflictos",
+  "description": "Escenario extremo (18 estudiantes, 8 materias, cupos muy reducidos y alta congestión horaria) — evalúa imposibilidad parcial y respeto estricto de restricciones.",
+  "seed": 404,
+  "default_weights": {
+    "w1_priority": 1.0,
+    "w2_empathy": 4.0,
+    "w3_planning": 2.0,
+    "w4_social": 5.0,
+    "w5_logistics": 1.5
+  }
+}

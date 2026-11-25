@@ -1,0 +1,576 @@
+[
+  {
+    "id": "S001",
+    "course_id": "A01",
+    "capacity": 17,
+    "schedule": [
+      "T02",
+      "T20"
+    ],
+    "rooms": {
+      "T02": "U4",
+      "T20": "U4"
+    },
+    "professor": "Prof. M. González"
+  },
+  {
+    "id": "S002",
+    "course_id": "A01",
+    "capacity": 13,
+    "schedule": [
+      "T08",
+      "T14"
+    ],
+    "rooms": {
+      "T08": "U5",
+      "T14": "U5"
+    },
+    "professor": "Prof. G. Castillo"
+  },
+  {
+    "id": "S003",
+    "course_id": "A01",
+    "capacity": 13,
+    "schedule": [
+      "T10",
+      "T22"
+    ],
+    "rooms": {
+      "T10": "U6",
+      "T22": "U6"
+    },
+    "professor": "Prof. S. Rojas"
+  },
+  {
+    "id": "S004",
+    "course_id": "A02",
+    "capacity": 10,
+    "schedule": [
+      "T02",
+      "T24"
+    ],
+    "rooms": {
+      "T02": "U7",
+      "T24": "U7"
+    },
+    "professor": "Prof. D. Suárez"
+  },
+  {
+    "id": "S005",
+    "course_id": "A02",
+    "capacity": 16,
+    "schedule": [
+      "T07",
+      "T19"
+    ],
+    "rooms": {
+      "T07": "U2",
+      "T19": "U2"
+    },
+    "professor": "Prof. E. Rueda"
+  },
+  {
+    "id": "S006",
+    "course_id": "A02",
+    "capacity": 15,
+    "schedule": [
+      "T14",
+      "T26"
+    ],
+    "rooms": {
+      "T14": "U7",
+      "T26": "U3"
+    },
+    "professor": "Prof. M. González"
+  },
+  {
+    "id": "S007",
+    "course_id": "A03",
+    "capacity": 13,
+    "schedule": [
+      "T04",
+      "T22"
+    ],
+    "rooms": {
+      "T04": "U5",
+      "T22": "U5"
+    },
+    "professor": "Prof. H. Torres"
+  },
+  {
+    "id": "S008",
+    "course_id": "A03",
+    "capacity": 15,
+    "schedule": [
+      "T05",
+      "T11"
+    ],
+    "rooms": {
+      "T05": "U5",
+      "T11": "U1"
+    },
+    "professor": "Prof. A. Carrillo"
+  },
+  {
+    "id": "S009",
+    "course_id": "A03",
+    "capacity": 12,
+    "schedule": [
+      "T12",
+      "T22"
+    ],
+    "rooms": {
+      "T12": "U6",
+      "T22": "U6"
+    },
+    "professor": "Prof. D. Suárez"
+  },
+  {
+    "id": "S010",
+    "course_id": "A03",
+    "capacity": 17,
+    "schedule": [
+      "T02",
+      "T20"
+    ],
+    "rooms": {
+      "T02": "U1",
+      "T20": "U1"
+    },
+    "professor": "Prof. F. Morales"
+  },
+  {
+    "id": "S011",
+    "course_id": "A04",
+    "capacity": 10,
+    "schedule": [
+      "T04",
+      "T16"
+    ],
+    "rooms": {
+      "T04": "U6",
+      "T16": "U5"
+    },
+    "professor": "Prof. C. Parra"
+  },
+  {
+    "id": "S012",
+    "course_id": "A04",
+    "capacity": 16,
+    "schedule": [
+      "T03",
+      "T15"
+    ],
+    "rooms": {
+      "T03": "U6",
+      "T15": "U6"
+    },
+    "professor": "Prof. F. Morales"
+  },
+  {
+    "id": "S013",
+    "course_id": "A04",
+    "capacity": 12,
+    "schedule": [
+      "T16",
+      "T28"
+    ],
+    "rooms": {
+      "T16": "U7",
+      "T28": "U4"
+    },
+    "professor": "Prof. C. Parra"
+  },
+  {
+    "id": "S014",
+    "course_id": "A04",
+    "capacity": 10,
+    "schedule": [
+      "T01",
+      "T23"
+    ],
+    "rooms": {
+      "T01": "U2",
+      "T23": "U2"
+    },
+    "professor": "Prof. V. Mendoza"
+  },
+  {
+    "id": "S015",
+    "course_id": "A05",
+    "capacity": 14,
+    "schedule": [
+      "T11",
+      "T29"
+    ],
+    "rooms": {
+      "T11": "U7",
+      "T29": "U3"
+    },
+    "professor": "Prof. R. Pavlich"
+  },
+  {
+    "id": "S016",
+    "course_id": "A05",
+    "capacity": 16,
+    "schedule": [
+      "T05",
+      "T17"
+    ],
+    "rooms": {
+      "T05": "U6",
+      "T17": "U6"
+    },
+    "professor": "Prof. A. Carrillo"
+  },
+  {
+    "id": "S017",
+    "course_id": "A05",
+    "capacity": 14,
+    "schedule": [
+      "T12",
+      "T22"
+    ],
+    "rooms": {
+      "T12": "U5",
+      "T22": "U5"
+    },
+    "professor": "Prof. E. Rueda"
+  },
+  {
+    "id": "S018",
+    "course_id": "A05",
+    "capacity": 17,
+    "schedule": [
+      "T05",
+      "T23"
+    ],
+    "rooms": {
+      "T05": "U7",
+      "T23": "U1"
+    },
+    "professor": "Prof. V. Mendoza"
+  },
+  {
+    "id": "S019",
+    "course_id": "A06",
+    "capacity": 13,
+    "schedule": [
+      "T27",
+      "T33"
+    ],
+    "rooms": {
+      "T27": "U6",
+      "T33": "U1"
+    },
+    "professor": "Prof. J. Bustacara"
+  },
+  {
+    "id": "S020",
+    "course_id": "A06",
+    "capacity": 15,
+    "schedule": [
+      "T10",
+      "T22"
+    ],
+    "rooms": {
+      "T10": "U1",
+      "T22": "U3"
+    },
+    "professor": "Prof. J. Bustacara"
+  },
+  {
+    "id": "S021",
+    "course_id": "A06",
+    "capacity": 16,
+    "schedule": [
+      "T10",
+      "T19"
+    ],
+    "rooms": {
+      "T10": "U1",
+      "T19": "U6"
+    },
+    "professor": "Prof. V. Mendoza"
+  },
+  {
+    "id": "S022",
+    "course_id": "A07",
+    "capacity": 12,
+    "schedule": [
+      "T01",
+      "T19"
+    ],
+    "rooms": {
+      "T01": "U4",
+      "T19": "U4"
+    },
+    "professor": "Prof. P. Ortiz"
+  },
+  {
+    "id": "S023",
+    "course_id": "A07",
+    "capacity": 13,
+    "schedule": [
+      "T03",
+      "T21"
+    ],
+    "rooms": {
+      "T03": "U2",
+      "T21": "U2"
+    },
+    "professor": "Prof. N. Vargas"
+  },
+  {
+    "id": "S024",
+    "course_id": "A08",
+    "capacity": 18,
+    "schedule": [
+      "T18",
+      "T26"
+    ],
+    "rooms": {
+      "T18": "U3",
+      "T26": "U3"
+    },
+    "professor": "Prof. F. Morales"
+  },
+  {
+    "id": "S025",
+    "course_id": "A08",
+    "capacity": 13,
+    "schedule": [
+      "T11",
+      "T23"
+    ],
+    "rooms": {
+      "T11": "U3",
+      "T23": "U5"
+    },
+    "professor": "Prof. V. Mendoza"
+  },
+  {
+    "id": "S026",
+    "course_id": "A08",
+    "capacity": 16,
+    "schedule": [
+      "T17",
+      "T29"
+    ],
+    "rooms": {
+      "T17": "U7",
+      "T29": "U7"
+    },
+    "professor": "Prof. H. Torres"
+  },
+  {
+    "id": "S027",
+    "course_id": "A08",
+    "capacity": 15,
+    "schedule": [
+      "T05",
+      "T23"
+    ],
+    "rooms": {
+      "T05": "U5",
+      "T23": "U5"
+    },
+    "professor": "Prof. E. Rueda"
+  },
+  {
+    "id": "S028",
+    "course_id": "A09",
+    "capacity": 14,
+    "schedule": [
+      "T09",
+      "T33"
+    ],
+    "rooms": {
+      "T09": "U6",
+      "T33": "U6"
+    },
+    "professor": "Prof. K. Díaz"
+  },
+  {
+    "id": "S029",
+    "course_id": "A09",
+    "capacity": 15,
+    "schedule": [
+      "T01",
+      "T13"
+    ],
+    "rooms": {
+      "T01": "U7",
+      "T13": "U7"
+    },
+    "professor": "Prof. G. Castillo"
+  },
+  {
+    "id": "S030",
+    "course_id": "A09",
+    "capacity": 10,
+    "schedule": [
+      "T13",
+      "T30"
+    ],
+    "rooms": {
+      "T13": "U6",
+      "T30": "U3"
+    },
+    "professor": "Prof. J. Bustacara"
+  },
+  {
+    "id": "S031",
+    "course_id": "A09",
+    "capacity": 17,
+    "schedule": [
+      "T05",
+      "T23"
+    ],
+    "rooms": {
+      "T05": "U2",
+      "T23": "U3"
+    },
+    "professor": "Prof. L. Flórez"
+  },
+  {
+    "id": "S032",
+    "course_id": "A10",
+    "capacity": 17,
+    "schedule": [
+      "T02",
+      "T14"
+    ],
+    "rooms": {
+      "T02": "U7",
+      "T14": "U7"
+    },
+    "professor": "Prof. S. Rojas"
+  },
+  {
+    "id": "S033",
+    "course_id": "A10",
+    "capacity": 13,
+    "schedule": [
+      "T18",
+      "T30"
+    ],
+    "rooms": {
+      "T18": "U2",
+      "T30": "U5"
+    },
+    "professor": "Prof. H. Torres"
+  },
+  {
+    "id": "S034",
+    "course_id": "A10",
+    "capacity": 17,
+    "schedule": [
+      "T04",
+      "T16"
+    ],
+    "rooms": {
+      "T04": "U5",
+      "T16": "U5"
+    },
+    "professor": "Prof. K. Díaz"
+  },
+  {
+    "id": "S035",
+    "course_id": "A10",
+    "capacity": 15,
+    "schedule": [
+      "T08",
+      "T20"
+    ],
+    "rooms": {
+      "T08": "U3",
+      "T20": "U7"
+    },
+    "professor": "Prof. M. González"
+  },
+  {
+    "id": "S036",
+    "course_id": "A11",
+    "capacity": 11,
+    "schedule": [
+      "T06",
+      "T24"
+    ],
+    "rooms": {
+      "T06": "U3",
+      "T24": "U3"
+    },
+    "professor": "Prof. C. Parra"
+  },
+  {
+    "id": "S037",
+    "course_id": "A11",
+    "capacity": 16,
+    "schedule": [
+      "T13",
+      "T29"
+    ],
+    "rooms": {
+      "T13": "U3",
+      "T29": "U3"
+    },
+    "professor": "Prof. J. Bustacara"
+  },
+  {
+    "id": "S038",
+    "course_id": "A11",
+    "capacity": 18,
+    "schedule": [
+      "T02",
+      "T20"
+    ],
+    "rooms": {
+      "T02": "U1",
+      "T20": "U1"
+    },
+    "professor": "Prof. V. Mendoza"
+  },
+  {
+    "id": "S039",
+    "course_id": "A11",
+    "capacity": 15,
+    "schedule": [
+      "T07",
+      "T19"
+    ],
+    "rooms": {
+      "T07": "U7",
+      "T19": "U5"
+    },
+    "professor": "Prof. P. Ortiz"
+  },
+  {
+    "id": "S040",
+    "course_id": "A12",
+    "capacity": 16,
+    "schedule": [
+      "T05",
+      "T13"
+    ],
+    "rooms": {
+      "T05": "U2",
+      "T13": "U2"
+    },
+    "professor": "Prof. J. Bustacara"
+  },
+  {
+    "id": "S041",
+    "course_id": "A12",
+    "capacity": 18,
+    "schedule": [
+      "T07",
+      "T19"
+    ],
+    "rooms": {
+      "T07": "U5",
+      "T19": "U4"
+    },
+    "professor": "Prof. P. Ortiz"
+  }
+]

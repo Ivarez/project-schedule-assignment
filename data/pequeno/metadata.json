@@ -1,0 +1,12 @@
+{
+  "name": "pequeno",
+  "description": "Escenario pequeño (6 estudiantes, 5 materias, 12 secciones) — verificable manualmente y resoluble de forma exacta con Branch & Bound.",
+  "seed": 101,
+  "default_weights": {
+    "w1_priority": 1.0,
+    "w2_empathy": 4.0,
+    "w3_planning": 2.0,
+    "w4_social": 5.0,
+    "w5_logistics": 1.5
+  }
+}
